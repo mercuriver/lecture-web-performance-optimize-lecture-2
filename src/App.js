@@ -5,13 +5,19 @@ import InfoTable from './components/InfoTable'
 import SurveyChart from './components/SurveyChart'
 import Footer from './components/Footer'
 
-const LazyImageModal = lazy( () => import('./components/ImageModal'))
+function lazyWithPreload(importFunction) {
+    const Component = React.lazy(importFunction);
+    Component.preload = importFunction;
+    return Component;
+}
+
+const LazyImageModal = lazyWithPreload( () => import('./components/ImageModal'))
 
 function App() {
     const [showModal, setShowModal] = useState(false);
 
     useEffect( () => { 
-        const component = import('./components/ImageModal');
+        LazyImageModal.preload();
     }, []);
 
     // const handleMouseEnter = () => {
